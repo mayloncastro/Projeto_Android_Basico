@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="16dp"
+        android:text="Cód. Combustível:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etCodigo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Clique em Listar"
+        android:layout_marginTop="3dp"
+        android:width="150dp"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <Button
+        android:id="@+id/btListar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="Listar"
+        android:onClick="btListarOnClick"
+        app:layout_constraintBottom_toBottomOf="@+id/etCodigo"
+        app:layout_constraintStart_toEndOf="@+id/etCodigo"
+        app:layout_constraintTop_toTopOf="@+id/etCodigo"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Cidade Abastecimento:"
+        app:layout_constraintStart_toStartOf="@+id/etCodigo"
+        app:layout_constraintTop_toBottomOf="@+id/etCodigo" />
+
+    <EditText
+        android:id="@+id/etCidadeAbastecimento"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:inputType="text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Quantidade Litros:"
+        app:layout_constraintStart_toStartOf="@+id/etCidadeAbastecimento"
+        app:layout_constraintTop_toBottomOf="@+id/etCidadeAbastecimento" />
+
+    <EditText
+        android:id="@+id/etQuantidadeLitros"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+    <Button
+        android:id="@+id/btIncluir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Incluir Registro"
+        android:onClick="btIncluirOnClick"
+        app:layout_constraintStart_toStartOf="@+id/etQuantidadeLitros"
+        app:layout_constraintTop_toBottomOf="@+id/etQuantidadeLitros" />
+
+    <Button
+        android:id="@+id/btDados"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:onClick="btDadosOnClick"
+        android:text="Dados Estatísticos"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btIncluir" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
