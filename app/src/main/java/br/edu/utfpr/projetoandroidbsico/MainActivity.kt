@@ -18,7 +18,10 @@ class MainActivity() : AppCompatActivity() {
         val mensagem: AlertDialog.Builder = AlertDialog.Builder(this)
         mensagem.setTitle(titulo)
         mensagem.setMessage(texto)
-        mensagem.setNeutralButton("OK", null)
+        mensagem.setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+        }
+
         mensagem.show()
     }
 
@@ -40,36 +43,37 @@ class MainActivity() : AppCompatActivity() {
         etCidadeAbastecimento = findViewById( R.id.etCidadeAbastecimento )
         etQuantidadeLitros = findViewById( R.id.etQuantidadeLitros )
 
+        //Local de Armazenamento do Banco
         banco = SQLiteDatabase.openOrCreateDatabase(this.getDatabasePath("dbfile.sqlite"), null)
 
+        //Criação da tabela e seus campos
         banco.execSQL("CREATE TABLE IF NOT EXISTS abastecimentos(_id INTEGER PRIMARY KEY AUTOINCREMENT, codigo_abastecimento INTEGER, cidade TEXT, quantidade_litros REAL)")
 
     }
 
     fun btListarOnClick(view: View) {
+        //chamamento da função exibir código como AlertDialog
         exibirCodigo ("Inclua o Código dos Combustíveis de acordo com a lista abaixo:",
             "1 - Gasolina\n2 - Etanol\n3 - Diesel\n4 - Gás Natural")
     }
 
     fun btIncluirOnClick(view: View) {
-        if (etCodigo.getText().toString() == "") { //peso =string vazia
-            //peso =string vazia
+        //Validação para preenchimento do campos
+        if (etCodigo.getText().toString() == "") {
             etCodigo.setError("O campo Código do combustível deve ser preenchido") // erro a ser retornado
 
             etCodigo.requestFocus()
             return
         }
 
-        if (etCidadeAbastecimento.getText().toString() == "") { //peso =string vazia
-            //peso =string vazia
+        if (etCidadeAbastecimento.getText().toString() == "") {
             etCidadeAbastecimento.setError("O campo Cidade deve ser preenchido") // erro a ser retornado
 
             etCidadeAbastecimento.requestFocus()
             return
         }
 
-        if (etQuantidadeLitros.getText().toString() == "") { //peso =string vazia
-            //peso =string vazia
+        if (etQuantidadeLitros.getText().toString() == "") {
             etQuantidadeLitros.setError("O campo Quantidade deve ser preenchido") // erro a ser retornado
 
             etQuantidadeLitros.requestFocus()
@@ -84,13 +88,13 @@ class MainActivity() : AppCompatActivity() {
         banco.insert("abastecimentos", null, registro)
 
         //apresentação da resposta ao banco via Toast
-        val codigoCombustivel = etCodigo.text.toString().toInt() // Substitua pelo código que você deseja contar
+        val codigoCombustivel = etCodigo.text.toString().toInt()
 
         // Consulta pra contar as ocorrências do código de combustível na tabela "abastecimentos"
         val query = "SELECT COUNT(*) FROM abastecimentos WHERE codigo_abastecimento = ?"
         val parametros = arrayOf(codigoCombustivel.toString())
 
-        // Executar a consulta
+        // Código para executar a consulta
         val cursor = banco.rawQuery(query, parametros)
 
         var quantidadeRepeticoes = 0
@@ -100,9 +104,9 @@ class MainActivity() : AppCompatActivity() {
             quantidadeRepeticoes = cursor.getInt(0)
             cursor.close()
         }
-        Toast.makeText(this, "Total de abastecimentos combustível ${codigoCombustivel}: " + quantidadeRepeticoes.toString(),
-            Toast.LENGTH_SHORT).show()
 
+        Toast.makeText(this, "Registro de Abastecimento.\n Combustível ${codigoCombustivel}: " + quantidadeRepeticoes.toString(),
+            Toast.LENGTH_SHORT).show()
 
     }
 
@@ -124,34 +128,28 @@ class MainActivity() : AppCompatActivity() {
             cursor.close()
         }
         //Mudando de código para nome dos combustíveis
-        val codigoParaNome = mapOf(
-            1 to "Gasolina",
-            2 to "Etanol",
-            3 to "Diesel",
-            4 to "Gás Natural"
-        )
+        val codigoParaNome = mapOf(1 to "Gasolina", 2 to "Etanol", 3 to "Diesel", 4 to "Gás Natural")
 
-        // Criar uma string formatada para exibir os resultados com os nomes
-        val resultadoString = StringBuilder()
+        // Criando uma string para exibir os resultados com os nomes
+        val resultString = StringBuilder()
 
         for ((codigoCombustivel, totalQuantidadeLitros) in mapaResultados) {
             val nomeCombustivel = codigoParaNome[codigoCombustivel]
             if (nomeCombustivel != null) {
-                resultadoString.append("Combustível: $nomeCombustivel, Total Quantidade Litros: $totalQuantidadeLitros\n")
+                resultString.append("Combustível: ${nomeCombustivel}," +
+                        " Quantidade Total Abastecida: ${totalQuantidadeLitros}\n")
             }
         }
 
         // Criando o AlertDialog
         val alertDialogBuilder = AlertDialog.Builder(this)
-        alertDialogBuilder.setTitle("Resultados da Soma por Código de Combustível")
-        alertDialogBuilder.setMessage(resultadoString.toString())
-
-// Configurar o botão "OK" no AlertDialog
+        alertDialogBuilder.setTitle("Somatória por Código de Combustível")
+        alertDialogBuilder.setMessage(resultString.toString())
         alertDialogBuilder.setPositiveButton("OK") { dialog, _ ->
             dialog.dismiss()
         }
 
-// Exibir o AlertDialog
+        // Exibição do AlertDialog
         val alertDialog = alertDialogBuilder.create()
         alertDialog.show()
 
